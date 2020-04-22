@@ -90,17 +90,22 @@ function Loader.load_data(game_path, mod_dir)
     end
 
     -- loop over all order
-    local inited = false
+    local core_inited = false
+    local base_inited = false
     for _, filename in ipairs(filenames) do
         for _, module_name in ipairs(order) do
             local info = module_info[module_name]
 
             -- special: The core-module has the lualib-dir, which needs to be
             -- added
-            if module_name == 'core' and not inited then
+            if module_name == 'core' and not core_inited then
                 package.path = info.localPath .. "/lualib/?.lua;" .. package.path
                 require("dataloader")
-                inited = true
+                core_inited = true
+            end
+            if module_name == 'base' and not base_inited then
+                package.path = info.localPath .. "/lualib/?.lua;" .. package.path
+                base_inited = true
             end
 
             local loaded = {}
