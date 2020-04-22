@@ -17,7 +17,10 @@ end
 
 function ZipModLoader:__call(name)
     name = string.gsub(name, "%.", "/")
-    local potential_files = { self.arc_subfolder .. name .. ".lua" }
+    local potential_files = { 
+        self.arc_subfolder .. name .. ".lua",
+        self.arc_subfolder .. string.gsub(name, "^__" .. string.gsub(self.mod_name, "_.+", "")  .. "__/", "") .. ".lua",
+    }
     if #directory_stack ~= 0 then
         table.insert(potential_files, directory_stack[#directory_stack] .. name .. ".lua")
     end
