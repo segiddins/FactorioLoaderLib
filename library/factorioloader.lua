@@ -269,7 +269,7 @@ function Module:run(filename)
     end
     package.path = self.localPath .. "/?.lua;" .. package.path
     dofile(file_path)
-    package.path = old_path
+    -- package.path = old_path
 end
 function Module:locale(locales)
     local locale_dir = self.localPath .. "/locale"
@@ -332,16 +332,17 @@ function ZipModule.new(dirname, mod_name)
 end
 function ZipModule.run(self, filename)
     local loader = ZipModLoader.new(self.mod_path, self.mod_name, self.arc_subfolder)
+    table.insert(package.searchers, loader)
     table.insert(package.searchers, 1, loader)
     local mod = loader(filename)
     if type(mod) == "string" then
         table.remove(package.searchers, 1)
-        loader:close()
+        -- loader:close()
         return
     end
     if mod ~= nil then mod() end
     table.remove(package.searchers, 1)
-    loader:close()
+    -- loader:close()
 end
 function ZipModule:locale(locales)
     local arc = assert(zip.open(self.zip_path))
