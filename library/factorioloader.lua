@@ -12,6 +12,33 @@ local SettingLoader = require("library/settingloader")
 local ZipModLoader = require("library/ZipModLoader")
 mods = {}
 
+local DotLoader = {}
+function DotLoader.new()
+    local mod = {
+    }
+    return setmetatable(mod, DotLoader)
+end
+function DotLoader:__call(name)
+    -- print("searching for: " .. name)
+    if string.match(name, "%.") then
+        x = {}
+    else
+        return
+    end
+    name = string.gsub(name, "%.", "/")
+    for _, loader in ipairs(package.searchers) do
+        if loader ~= self then
+            loaded = loader(name)
+            if loaded then
+                return loaded
+            end
+        end
+    end
+    return
+end
+
+table.insert(package.searchers, DotLoader.new())
+
 function endswith(s, sub)
     return string.sub(s, -string.len(sub)) == sub
 end
