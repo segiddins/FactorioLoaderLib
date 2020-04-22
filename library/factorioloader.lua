@@ -112,7 +112,9 @@ function Loader.load_data(game_path, mod_dir)
             for name, mod in pairs(package.loaded) do
                 loaded[name] = mod
             end
-            info:run(filename)
+            if module_name ~= "MIRV" and nil == string.find(module_name, "^Schall") and nil == string.find(module_name, "deadlock-") and module_name ~= "Squeak Through" and module_name ~= "even-distribution" and module_name ~= "nixie-tubes" then
+                info:run(filename)
+            end
             for name, mod in pairs(package.loaded) do
                 if loaded[name] == nil then
                     package.loaded[name] = nil
