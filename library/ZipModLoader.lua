@@ -31,7 +31,7 @@ function ZipModLoader:__call(name)
         end
     end
     if not file then
-        return "Not found: " .. name .. " in " .. self.archive_name
+        return --"Not found: " .. name .. " in " .. self.archive_name .. "\n"
     end
     local content = file:read("*a")
     file:close()
